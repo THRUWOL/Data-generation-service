@@ -16,7 +16,7 @@ public class Data {
     private double measurement;
     private MeasurementType measurementType;
 
-    public enum MeasurementType{
+    public enum MeasurementType {
 
         TEMPERATURE,
         VOLTAGE,
