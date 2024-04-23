@@ -15,24 +15,24 @@ public class KafkaDataServiceImpl implements KafkaDataService {
 
     @Override
     public void send(Data data) {
-
         String topic = switch (data.getMeasurementType()) {
-            case TEMPERATURE -> "data_temperature";
-            case VOLTAGE -> "data_voltage";
-            case POWER -> "data_power";
+            case TEMPERATURE -> "data-temperature";
+            case VOLTAGE -> "data-voltage";
+            case POWER -> "data-power";
         };
-
         sender.send(
-                Mono.just(
-                        SenderRecord.create(
-                                topic,
-                                0,
-                                System.currentTimeMillis(),
-                                String.valueOf(data.hashCode()),
-                                data,
-                                null
+                        Mono.just(
+                                SenderRecord.create(
+                                        topic,
+                                        0,
+                                        System.currentTimeMillis(),
+                                        String.valueOf(data.hashCode()),
+                                        data,
+                                        null
+                                )
                         )
                 )
-        ).subscribe();
+                .subscribe();
     }
+
 }

@@ -4,7 +4,7 @@ import com.jcabi.xml.XML;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public final class TextXPath {
+public final class TextXpath {
 
     private final XML xml;
     private final String node;
@@ -16,4 +16,5 @@ public final class TextXPath {
                 .xpath("text()")
                 .get(0);
     }
+
 }

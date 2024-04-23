@@ -32,7 +32,8 @@ public class KafkaConfig {
                 .replicas(1)
                 .config(
                         TopicConfig.RETENTION_MS_CONFIG,
-                        String.valueOf(Duration.ofDays(7).toMillis()))
+                        String.valueOf(Duration.ofDays(7).toMillis())
+                )
                 .build();
     }
 
@@ -43,7 +44,8 @@ public class KafkaConfig {
                 .replicas(1)
                 .config(
                         TopicConfig.RETENTION_MS_CONFIG,
-                        String.valueOf(Duration.ofDays(7).toMillis()))
+                        String.valueOf(Duration.ofDays(7).toMillis())
+                )
                 .build();
     }
 
@@ -54,7 +56,8 @@ public class KafkaConfig {
                 .replicas(1)
                 .config(
                         TopicConfig.RETENTION_MS_CONFIG,
-                        String.valueOf(Duration.ofDays(7).toMillis()))
+                        String.valueOf(Duration.ofDays(7).toMillis())
+                )
                 .build();
     }
 
@@ -63,17 +66,26 @@ public class KafkaConfig {
         Map<String, Object> props = new HashMap<>(3);
         props.put(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                servers);
-        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-                new TextXPath(this.settings, "//keySerializer").toString());
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-                new TextXPath(this.settings, "//valueSerializer").toString());
-
+                servers
+        );
+        props.put(
+                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
+                new TextXpath(this.settings, "//keySerializer")
+                        .toString()
+        );
+        props.put(
+                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
+                new TextXpath(this.settings, "//valueSerializer")
+                        .toString()
+        );
         return SenderOptions.create(props);
     }
 
     @Bean
-    public KafkaSender<String, Object> sender() {
-        return KafkaSender.create(senderOptions());
+    public KafkaSender<String, Object> sender(
+            SenderOptions<String, Object> senderOptions
+    ) {
+        return KafkaSender.create(senderOptions);
     }
+
 }

@@ -14,7 +14,8 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class TestDataServiceImpl implements TestDataService {
 
-    private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+    private final ScheduledExecutorService executorService
+            = Executors.newSingleThreadScheduledExecutor();
     private final KafkaDataService kafkaDataService;
 
     @Override
@@ -23,10 +24,20 @@ public class TestDataServiceImpl implements TestDataService {
             executorService.scheduleAtFixedRate(
                     () -> {
                         Data data = new Data();
-                        data.setSensorId((long) getRandomNumber(1, 10));
-                        data.setMeasurement(getRandomNumber(15, 100));
-                        data.setMeasurementType(getRandomMeasurementType(testOptions.getMeasurementTypes()));
-                        data.setTimestamp(LocalDateTime.now());
+                        data.setSensorId(
+                                (long) getRandomNumber(1, 10)
+                        );
+                        data.setMeasurement(
+                                getRandomNumber(15, 20)
+                        );
+                        data.setMeasurementType(
+                                getRandomMeasurement(
+                                        testOptions.getMeasurementTypes()
+                                )
+                        );
+                        data.setTimestamp(
+                                LocalDateTime.now()
+                        );
                         kafkaDataService.send(data);
                     },
                     0,
@@ -36,12 +47,15 @@ public class TestDataServiceImpl implements TestDataService {
         }
     }
 
-    private double getRandomNumber(int min, int max) {
-        return (Math.random() * (max - min)) + max;
+    private double getRandomNumber(double min, double max) {
+        return (Math.random() * (max - min)) + min;
     }
 
-    private Data.MeasurementType getRandomMeasurementType(Data.MeasurementType[] measurementTypes) {
+    private Data.MeasurementType getRandomMeasurement(
+            Data.MeasurementType[] measurementTypes
+    ) {
         int randomTypeId = (int) (Math.random() * measurementTypes.length);
         return measurementTypes[randomTypeId];
     }
+
 }
